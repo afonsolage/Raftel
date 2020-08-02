@@ -39,8 +39,9 @@ func _physics_process(delta):
 	
 	var size = randf() * max_size + (max_size - min_size)
 	
-	mob.scale.x = size
-	mob.scale.y = size
-
+	var sprite = mob.get_node("Sprite")
+	sprite.scale.x = size
+	sprite.scale.y = size
+	sprite.modulate = Color(randf() * 0.5 + 0.5, randf() * 0.5 + 0.5, randf() * 0.5 + 0.5)
 	
 	ysort.add_child(mob)
