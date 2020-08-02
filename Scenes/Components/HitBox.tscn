@@ -1,7 +1,8 @@
 [gd_scene load_steps=2 format=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
-height = 0.0
+radius = 10.7811
+height = 31.5305
 
 [node name="HitBox" type="Area2D"]
 collision_layer = 0

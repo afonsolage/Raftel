@@ -14,6 +14,7 @@ enum State {
 	IDLING,
 	WALKING,
 	ATTACKING,
+	DIED,
 }
 
 func process_input():
@@ -28,7 +29,7 @@ func process_input():
 func _physics_process(delta):
 	process_input()
 	
-	if state == State.ATTACKING:
+	if state == State.ATTACKING || state == State.DIED:
 		return
 	
 	if input_action:
@@ -57,5 +58,12 @@ func set_attacking():
 	state = State.ATTACKING
 	animation_state.travel("attack")
 	
+func set_died():
+	state = State.DIED
+	animation_state.travel("Die")
+	
 func attack_finished():
 	set_idle()
+
+func _on_HP_died():
+	set_died()

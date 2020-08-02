@@ -21,7 +21,7 @@ WALL_TICKNESS = 0.5
 [node name="YSort" type="YSort" parent="."]
 
 [node name="Monster" parent="YSort" instance=ExtResource( 3 )]
-position = Vector2( 1032.23, 860.986 )
+position = Vector2( 1216.81, 826.338 )
 
 [node name="Player" parent="YSort" instance=ExtResource( 2 )]
-position = Vector2( 913.311, 849.094 )
+position = Vector2( 701.014, 861.693 )
