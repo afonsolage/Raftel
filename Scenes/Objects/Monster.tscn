@@ -156,6 +156,7 @@ tree_root = ExtResource( 1 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 10 )
+parameters/attack/blend_position = Vector2( 0, 0 )
 parameters/idle/blend_position = Vector2( 0, 0 )
 parameters/walk/blend_position = Vector2( 0, 0 )
 

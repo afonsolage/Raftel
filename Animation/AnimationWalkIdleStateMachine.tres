@@ -1,16 +1,16 @@
-[gd_resource type="AnimationNodeStateMachine" load_steps=11 format=2]
+[gd_resource type="AnimationNodeStateMachine" load_steps=20 format=2]
 
 [sub_resource type="AnimationNodeAnimation" id=1]
-animation = "Idle_Left"
+animation = "Attack_Left"
 
 [sub_resource type="AnimationNodeAnimation" id=2]
-animation = "Idle_Right"
+animation = "Attack_Right"
 
 [sub_resource type="AnimationNodeAnimation" id=3]
-animation = "Idle_Down"
+animation = "Attack_Down"
 
 [sub_resource type="AnimationNodeAnimation" id=4]
-animation = "Idle_Up"
+animation = "Attack_Up"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=5]
 blend_point_0/node = SubResource( 1 )
@@ -20,22 +20,22 @@ blend_point_1/pos = Vector2( 1, 0 )
 blend_point_2/node = SubResource( 3 )
 blend_point_2/pos = Vector2( 0, 1.1 )
 blend_point_3/node = SubResource( 4 )
-blend_point_3/pos = Vector2( 0, -0.9 )
-min_space = Vector2( -1, -0.92 )
+blend_point_3/pos = Vector2( 0, -1.1 )
+min_space = Vector2( -1, -1.1 )
 max_space = Vector2( 1, 1.1 )
 blend_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id=6]
-animation = "Walk_Left"
+animation = "Idle_Left"
 
 [sub_resource type="AnimationNodeAnimation" id=7]
-animation = "Walk_Right"
+animation = "Idle_Right"
 
 [sub_resource type="AnimationNodeAnimation" id=8]
-animation = "Walk_Down"
+animation = "Idle_Down"
 
 [sub_resource type="AnimationNodeAnimation" id=9]
-animation = "Walk_Up"
+animation = "Idle_Up"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=10]
 blend_point_0/node = SubResource( 6 )
@@ -45,14 +45,50 @@ blend_point_1/pos = Vector2( 1, 0 )
 blend_point_2/node = SubResource( 8 )
 blend_point_2/pos = Vector2( 0, 1.1 )
 blend_point_3/node = SubResource( 9 )
+blend_point_3/pos = Vector2( 0, -0.9 )
+min_space = Vector2( -1, -0.92 )
+max_space = Vector2( 1, 1.1 )
+blend_mode = 1
+
+[sub_resource type="AnimationNodeAnimation" id=11]
+animation = "Walk_Left"
+
+[sub_resource type="AnimationNodeAnimation" id=12]
+animation = "Walk_Right"
+
+[sub_resource type="AnimationNodeAnimation" id=13]
+animation = "Walk_Down"
+
+[sub_resource type="AnimationNodeAnimation" id=14]
+animation = "Walk_Up"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id=15]
+blend_point_0/node = SubResource( 11 )
+blend_point_0/pos = Vector2( -1, 0 )
+blend_point_1/node = SubResource( 12 )
+blend_point_1/pos = Vector2( 1, 0 )
+blend_point_2/node = SubResource( 13 )
+blend_point_2/pos = Vector2( 0, 1.1 )
+blend_point_3/node = SubResource( 14 )
 blend_point_3/pos = Vector2( 0, -1.1 )
 min_space = Vector2( -1, -1.1 )
 max_space = Vector2( 1, 1.1 )
 blend_mode = 1
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=16]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=17]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=18]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=19]
+
 [resource]
-states/idle/node = SubResource( 5 )
+states/attack/node = SubResource( 5 )
+states/attack/position = Vector2( 362, 233 )
+states/idle/node = SubResource( 10 )
 states/idle/position = Vector2( 271, 107 )
-states/walk/node = SubResource( 10 )
-states/walk/position = Vector2( 400, 107 )
+states/walk/node = SubResource( 15 )
+states/walk/position = Vector2( 457, 107 )
+transitions = [ "idle", "walk", SubResource( 16 ), "walk", "idle", SubResource( 17 ), "attack", "idle", SubResource( 18 ), "idle", "attack", SubResource( 19 ) ]
 start_node = "idle"
