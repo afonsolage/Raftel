@@ -2,8 +2,8 @@
 
 [ext_resource path="res://Resources/terrain_tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/Objects/Player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/Objects/Monster.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scripts/Editor/GenerateTerrain.gd" type="Script" id=4]
+[ext_resource path="res://Scripts/System/MonsterSpawner.gd" type="Script" id=5]
 
 [node name="Root" type="Node2D"]
 position = Vector2( 24, 24 )
@@ -20,8 +20,10 @@ WALL_TICKNESS = 0.5
 
 [node name="YSort" type="YSort" parent="."]
 
-[node name="Monster" parent="YSort" instance=ExtResource( 3 )]
-position = Vector2( 1216.81, 826.338 )
-
 [node name="Player" parent="YSort" instance=ExtResource( 2 )]
 position = Vector2( 701.014, 861.693 )
+
+[node name="MonsterSpawner" type="Node" parent="YSort"]
+script = ExtResource( 5 )
+
+[node name="YSort" type="YSort" parent="YSort/MonsterSpawner"]

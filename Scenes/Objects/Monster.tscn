@@ -7,13 +7,13 @@
 [ext_resource path="res://Scenes/Components/HP.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Components/HitBox.tscn" type="PackedScene" id=6]
 
-[sub_resource type="CircleShape2D" id=10]
+[sub_resource type="CircleShape2D" id=1]
 radius = 16.9654
 
-[sub_resource type="CircleShape2D" id=16]
+[sub_resource type="CircleShape2D" id=2]
 radius = 122.871
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=3]
 resource_name = "Attack_Down"
 length = 0.3
 tracks/0/type = "value"
@@ -65,7 +65,7 @@ tracks/3/keys = {
 "values": [ 90.0 ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=4]
 resource_name = "Attack_Left"
 length = 0.3
 tracks/0/type = "value"
@@ -117,7 +117,7 @@ tracks/3/keys = {
 "values": [ 0.0 ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=5]
 resource_name = "Attack_Right"
 length = 0.3
 tracks/0/type = "value"
@@ -169,7 +169,7 @@ tracks/3/keys = {
 "values": [ 0.0 ]
 }
 
-[sub_resource type="Animation" id=15]
+[sub_resource type="Animation" id=6]
 resource_name = "Attack_Up"
 length = 0.3
 tracks/0/type = "value"
@@ -221,7 +221,7 @@ tracks/3/keys = {
 "values": [ 90.0 ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=7]
 resource_name = "Die"
 length = 0.3
 tracks/0/type = "value"
@@ -237,7 +237,7 @@ tracks/0/keys = {
 "values": [ 41, 42, 43 ]
 }
 
-[sub_resource type="Animation" id=1]
+[sub_resource type="Animation" id=8]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -252,7 +252,7 @@ tracks/0/keys = {
 "values": [ 20 ]
 }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=9]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -267,7 +267,7 @@ tracks/0/keys = {
 "values": [ 10 ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=10]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -282,7 +282,7 @@ tracks/0/keys = {
 "values": [ 30 ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=11]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -297,7 +297,7 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=12]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -313,7 +313,7 @@ tracks/0/keys = {
 "values": [ 24, 25, 26, 27, 28, 29 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=13]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -329,7 +329,7 @@ tracks/0/keys = {
 "values": [ 14, 15, 16, 17, 18, 19 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=14]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -345,7 +345,7 @@ tracks/0/keys = {
 "values": [ 34, 35, 36, 37, 38, 39 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=15]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -361,7 +361,7 @@ tracks/0/keys = {
 "values": [ 4, 5, 6, 7, 8, 9 ]
 }
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=9]
+[sub_resource type="AnimationNodeStateMachinePlayback" id=16]
 
 [sub_resource type="CapsuleShape2D" id=17]
 radius = 9.85406
@@ -371,14 +371,14 @@ height = 31.2294
 script = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 10 )
+shape = SubResource( 1 )
 
 [node name="AggroArea" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 2147483650
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AggroArea"]
-shape = SubResource( 16 )
+shape = SubResource( 2 )
 
 [node name="HurtBox" parent="." instance=ExtResource( 4 )]
 collision_layer = 8
@@ -387,21 +387,22 @@ collision_layer = 8
 position = Vector2( 0, 1.88988 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Attack_Down = SubResource( 13 )
-anims/Attack_Left = SubResource( 12 )
-anims/Attack_Right = SubResource( 14 )
-anims/Attack_Up = SubResource( 15 )
-anims/Die = SubResource( 11 )
-anims/Idle_Down = SubResource( 1 )
-anims/Idle_Left = SubResource( 2 )
-anims/Idle_Right = SubResource( 3 )
-anims/Idle_Up = SubResource( 4 )
-anims/Walk_Down = SubResource( 5 )
-anims/Walk_Left = SubResource( 6 )
-anims/Walk_Right = SubResource( 7 )
-anims/Walk_Up = SubResource( 8 )
+anims/Attack_Down = SubResource( 3 )
+anims/Attack_Left = SubResource( 4 )
+anims/Attack_Right = SubResource( 5 )
+anims/Attack_Up = SubResource( 6 )
+anims/Die = SubResource( 7 )
+anims/Idle_Down = SubResource( 8 )
+anims/Idle_Left = SubResource( 9 )
+anims/Idle_Right = SubResource( 10 )
+anims/Idle_Up = SubResource( 11 )
+anims/Walk_Down = SubResource( 12 )
+anims/Walk_Left = SubResource( 13 )
+anims/Walk_Right = SubResource( 14 )
+anims/Walk_Up = SubResource( 15 )
 
 [node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
 vframes = 5
 hframes = 10
@@ -410,7 +411,7 @@ hframes = 10
 tree_root = ExtResource( 1 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
-parameters/playback = SubResource( 9 )
+parameters/playback = SubResource( 16 )
 parameters/attack/blend_position = Vector2( 0, 0 )
 parameters/idle/blend_position = Vector2( 0, 0 )
 parameters/walk/blend_position = Vector2( 0, 0 )
