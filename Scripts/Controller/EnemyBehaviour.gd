@@ -6,6 +6,7 @@ enum State {
 	MOVING,
 	ATTACKING,
 	RETURNING,
+	DEAD,
 }
 
 export (State) var state = State.IDLING
@@ -22,7 +23,6 @@ onready var animation_state = animation_tree.get("parameters/playback")
 var idling_timeout = 0
 var target = Vector2.ZERO
 
-
 func _physics_process(delta):
 	match state:
 		State.IDLING:
@@ -35,6 +35,8 @@ func _physics_process(delta):
 			process_moving(delta)
 		State.RETURNING:
 			process_returning(delta)
+		State.DEAD:
+			process_dead(delta)
 
 
 func process_idling(delta):
@@ -81,6 +83,8 @@ func process_returning(_delta):
 	target = Vector2(x + original_position.x, y + original_position.y)
 	state = State.MOVING
 
+func process_dead(_delta):
+	pass
 
 func get_random_wander_or_idle():
 	var rnd = randi() % 100
@@ -99,3 +103,16 @@ func set_walk_to(dir):
 
 	if moved.length() < 0.1:
 		set_idle()
+
+
+func set_dead():
+	state = State.DEAD
+	var timer = Timer.new()
+	timer.autostart = true
+	timer.wait_time = 5.0
+	timer.connect("timeout", self, "queue_free")
+	add_child(timer)
+	animation_state.travel("Die")
+
+func _on_HP_died():
+	set_dead()

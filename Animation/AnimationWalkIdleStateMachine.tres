@@ -1,4 +1,7 @@
-[gd_resource type="AnimationNodeStateMachine" load_steps=20 format=2]
+[gd_resource type="AnimationNodeStateMachine" load_steps=24 format=2]
+
+[sub_resource type="AnimationNodeAnimation" id=20]
+animation = "Die"
 
 [sub_resource type="AnimationNodeAnimation" id=1]
 animation = "Attack_Left"
@@ -83,12 +86,20 @@ blend_mode = 1
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=19]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=21]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=22]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=23]
+
 [resource]
+states/Die/node = SubResource( 20 )
+states/Die/position = Vector2( 707, 266 )
 states/attack/node = SubResource( 5 )
-states/attack/position = Vector2( 362, 233 )
+states/attack/position = Vector2( 367, 257 )
 states/idle/node = SubResource( 10 )
-states/idle/position = Vector2( 271, 107 )
+states/idle/position = Vector2( 401, 108 )
 states/walk/node = SubResource( 15 )
-states/walk/position = Vector2( 457, 107 )
-transitions = [ "idle", "walk", SubResource( 16 ), "walk", "idle", SubResource( 17 ), "attack", "idle", SubResource( 18 ), "idle", "attack", SubResource( 19 ) ]
+states/walk/position = Vector2( 681, 101 )
+transitions = [ "idle", "walk", SubResource( 16 ), "walk", "idle", SubResource( 17 ), "attack", "idle", SubResource( 18 ), "idle", "attack", SubResource( 19 ), "idle", "Die", SubResource( 21 ), "walk", "Die", SubResource( 22 ), "attack", "Die", SubResource( 23 ) ]
 start_node = "idle"

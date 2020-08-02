@@ -1,10 +1,98 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Animation/AnimationWalkIdleStateMachine.tres" type="AnimationNodeStateMachine" id=1]
 [ext_resource path="res://Sprites/spider01.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/Controller/EnemyBehaviour.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Components/HurtBox.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Components/HP.tscn" type="PackedScene" id=5]
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="CircleShape2D" id=10]
+radius = 16.9654
+
+[sub_resource type="Animation" id=13]
+resource_name = "Attack_Down"
+length = 0.3
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 21, 22, 23 ]
+}
+
+[sub_resource type="Animation" id=12]
+resource_name = "Attack_Left"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 11, 12, 13 ]
+}
+
+[sub_resource type="Animation" id=14]
+resource_name = "Attack_Right"
+length = 0.3
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 31, 32, 33 ]
+}
+
+[sub_resource type="Animation" id=15]
+resource_name = "Attack_Up"
+length = 0.3
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3 ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "Die"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 41, 42, 43 ]
+}
+
+[sub_resource type="Animation" id=1]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -19,7 +107,7 @@ tracks/0/keys = {
 "values": [ 20 ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -34,7 +122,7 @@ tracks/0/keys = {
 "values": [ 10 ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -49,7 +137,7 @@ tracks/0/keys = {
 "values": [ 30 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -64,7 +152,7 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -80,7 +168,7 @@ tracks/0/keys = {
 "values": [ 24, 25, 26, 27, 28, 29 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=6]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -96,7 +184,7 @@ tracks/0/keys = {
 "values": [ 14, 15, 16, 17, 18, 19 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=7]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -112,7 +200,7 @@ tracks/0/keys = {
 "values": [ 34, 35, 36, 37, 38, 39 ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=8]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -128,23 +216,33 @@ tracks/0/keys = {
 "values": [ 4, 5, 6, 7, 8, 9 ]
 }
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=10]
-
-[sub_resource type="CircleShape2D" id=11]
-radius = 16.9654
+[sub_resource type="AnimationNodeStateMachinePlayback" id=9]
 
 [node name="KinematicBody2D" type="KinematicBody2D"]
 script = ExtResource( 3 )
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 10 )
+
+[node name="HurtBox" parent="." instance=ExtResource( 4 )]
+
+[node name="CollisionShape2D" parent="HurtBox" index="0"]
+position = Vector2( 0, 1.88988 )
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Idle_Down = SubResource( 2 )
-anims/Idle_Left = SubResource( 3 )
-anims/Idle_Right = SubResource( 4 )
-anims/Idle_Up = SubResource( 5 )
-anims/Walk_Down = SubResource( 6 )
-anims/Walk_Left = SubResource( 7 )
-anims/Walk_Right = SubResource( 8 )
-anims/Walk_Up = SubResource( 9 )
+anims/Attack_Down = SubResource( 13 )
+anims/Attack_Left = SubResource( 12 )
+anims/Attack_Right = SubResource( 14 )
+anims/Attack_Up = SubResource( 15 )
+anims/Die = SubResource( 11 )
+anims/Idle_Down = SubResource( 1 )
+anims/Idle_Left = SubResource( 2 )
+anims/Idle_Right = SubResource( 3 )
+anims/Idle_Up = SubResource( 4 )
+anims/Walk_Down = SubResource( 5 )
+anims/Walk_Left = SubResource( 6 )
+anims/Walk_Right = SubResource( 7 )
+anims/Walk_Up = SubResource( 8 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
@@ -155,10 +253,14 @@ hframes = 10
 tree_root = ExtResource( 1 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
-parameters/playback = SubResource( 10 )
+parameters/playback = SubResource( 9 )
 parameters/attack/blend_position = Vector2( 0, 0 )
 parameters/idle/blend_position = Vector2( 0, 0 )
 parameters/walk/blend_position = Vector2( 0, 0 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 11 )
+[node name="HP" parent="." instance=ExtResource( 5 )]
+position = Vector2( -18.7413, -23.781 )
+[connection signal="area_entered" from="HurtBox" to="HP" method="_on_HurtBox_area_entered"]
+[connection signal="died" from="HP" to="." method="_on_HP_died"]
+
+[editable path="HurtBox"]
