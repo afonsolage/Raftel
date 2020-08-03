@@ -2,15 +2,11 @@
 
 [ext_resource path="res://assets/resources/terrain_tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/scenes/objects/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/scenes/systems/MonsterSpawner.tscn" type="PackedScene" id=3]
 [ext_resource path="res://src/Editor/GenerateTerrain.gd" type="Script" id=4]
-[ext_resource path="res://src/System/MonsterSpawner.gd" type="Script" id=5]
 
 [node name="Root" type="Node2D"]
 position = Vector2( 24, 24 )
-
-[node name="MonsterSpawner" type="Node" parent="."]
-script = ExtResource( 5 )
-max_monster_count = 200
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 1 )
@@ -25,4 +21,8 @@ WALL_TICKNESS = 0.5
 [node name="YSort" type="YSort" parent="."]
 
 [node name="Player" parent="YSort" instance=ExtResource( 2 )]
-position = Vector2( 701.014, 861.693 )
+position = Vector2( 996.888, 473.045 )
+
+[node name="MonsterSpawner" parent="YSort" instance=ExtResource( 3 )]
+
+[editable path="YSort/MonsterSpawner"]
