@@ -16,8 +16,8 @@ _global_script_class_icons={
 [application]
 
 config/name="Raftel"
-run/main_scene="res://Scenes/Stages/World.tscn"
-config/icon="res://Resources/icon.png"
+run/main_scene="res://assets/scenes/stages/world.tscn"
+config/icon="res://assets/resources/icon.png"
 
 [input]
 
@@ -68,4 +68,4 @@ ui_plus={
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
-environment/default_environment="res://Resources/default_env.tres"
+environment/default_environment="res://assets/resources/default_env.tres"

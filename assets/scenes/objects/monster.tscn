@@ -1,11 +1,26 @@
 [gd_scene load_steps=24 format=2]
 
-[ext_resource path="res://Animation/AnimationWalkIdleStateMachine.tres" type="AnimationNodeStateMachine" id=1]
-[ext_resource path="res://Sprites/spider01.png" type="Texture" id=2]
-[ext_resource path="res://Scripts/Controller/EnemyBehaviour.gd" type="Script" id=3]
-[ext_resource path="res://Scenes/Components/HurtBox.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scenes/Components/HP.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Scenes/Components/HitBox.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/animations/walk_idle_state_machine.tres" type="AnimationNodeStateMachine" id=1]
+[ext_resource path="res://assets/sprites/spider01.png" type="Texture" id=2]
+[ext_resource path="res://src/Controller/EnemyBehaviour.gd" type="Script" id=3]
+[ext_resource path="res://assets/scenes/components/hurt_box.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/scenes/components/hp.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/scenes/components/hit_box.tscn" type="PackedScene" id=6]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 16.9654
