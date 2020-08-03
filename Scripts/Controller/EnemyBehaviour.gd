@@ -15,7 +15,7 @@ export (int) var aggressiveness = 80
 export (int) var move_speed = 90
 export (int) var move_range = 200
 export (int) var max_range = 600
-export (int) var attack_range = 40
+export (int) var attack_range = 20
 
 onready var original_position = position
 onready var animation_tree = $AnimationTree

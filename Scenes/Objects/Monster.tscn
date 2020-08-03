@@ -50,7 +50,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0, 0.1, 0.3 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( -0.445435, 25.3906 ), Vector2( 0, 0 ) ]
+"values": [ Vector2( 0, 0 ), Vector2( 0, 30 ), Vector2( 0, 0 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("HitBox/CollisionShape2D:rotation_degrees")
@@ -102,7 +102,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0, 0.1, 0.3 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( -25.8361, 0.44545 ), Vector2( 0, 0 ) ]
+"values": [ Vector2( 0, 0 ), Vector2( -30, 0 ), Vector2( 0, 0 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("HitBox/CollisionShape2D:rotation_degrees")
@@ -154,7 +154,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0, 0.1, 0.3 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 26.727, 0.44545 ), Vector2( 0, 0 ) ]
+"values": [ Vector2( 0, 0 ), Vector2( 30, 0 ), Vector2( 0, 0 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("HitBox/CollisionShape2D:rotation_degrees")
@@ -206,7 +206,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0, 0.1, 0.3 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 0, -25.3906 ), Vector2( 0, 0 ) ]
+"values": [ Vector2( 0, 0 ), Vector2( 0, -30 ), Vector2( 0, 0 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("HitBox/CollisionShape2D:rotation_degrees")
@@ -365,15 +365,17 @@ tracks/0/keys = {
 
 [sub_resource type="CapsuleShape2D" id=17]
 radius = 9.85406
-height = 31.2294
+height = 38.2909
 
 [node name="KinematicBody2D" type="KinematicBody2D"]
 script = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource( 1 )
 
 [node name="AggroArea" type="Area2D" parent="."]
+visible = false
 collision_layer = 0
 collision_mask = 2147483650
 
@@ -381,6 +383,7 @@ collision_mask = 2147483650
 shape = SubResource( 2 )
 
 [node name="HurtBox" parent="." instance=ExtResource( 4 )]
+visible = false
 collision_layer = 8
 
 [node name="CollisionShape2D" parent="HurtBox" index="0"]

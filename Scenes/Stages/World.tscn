@@ -25,5 +25,6 @@ position = Vector2( 701.014, 861.693 )
 
 [node name="MonsterSpawner" type="Node" parent="YSort"]
 script = ExtResource( 5 )
+max_monster_count = 1
 
 [node name="YSort" type="YSort" parent="YSort/MonsterSpawner"]
