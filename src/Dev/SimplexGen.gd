@@ -22,6 +22,8 @@ export(int) var places_count := 10
 export(int) var places_path_noise_rate := 30
 export(int) var places_path_tickness := 5
 
+export(bool) var disable_randomness := false
+
 const DIRS := [Vector2(1,0), Vector2(0, 1), Vector2(-1, 0), Vector2(0, -1)]
 
 func reload(_value):
@@ -49,6 +51,9 @@ func reload(_value):
 func generate_terrain(img: Image) -> void:
 	var noise = OpenSimplexNoise.new()
 	
+	if disable_randomness:
+		seed(1)
+		
 	noise.seed = randi()
 	noise.octaves = octaves
 	noise.period = period
