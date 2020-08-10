@@ -8,6 +8,7 @@ export(bool) var generate_border := true
 export(bool) var generate_places := true
 export(bool) var connect_places := true
 export(bool) var smooth_connection_border := true
+export(bool) var colorize_map := true
 
 export(int) var size := 300
 export(int) var octaves := 2
@@ -35,6 +36,9 @@ func reload(_value):
 	
 	if generate_places:
 		generate_places(img)
+	
+	if colorize_map:
+		colorize_map(img)
 	
 	var texture = ImageTexture.new()
 	texture.create_from_image(img)
@@ -280,19 +284,22 @@ func generate_path(origin: Vector2, dest: Vector2, img: Image) -> void:
 
 
 func draw_path(path, img: Image) -> void:
+	var img_rect = img.get_used_rect()
 	img.lock()
 	
 	for p in path:
 		for dir in DIRS:
 			for i in range(1, places_path_tickness):
 				var pixel = p + (dir * i)
-				img.set_pixel(pixel.x, pixel.y, Color(0.5, 0.5, 0.5))
+				if img_rect.has_point(pixel):
+					img.set_pixel(pixel.x, pixel.y, Color(0.5, 0.5, 0.5))
 	
 	for p in path:
 		for dir in DIRS:
 			for i in range(1, int(places_path_tickness * 2)):
 				var pixel = p + (dir * i)
-				smooth_pixel(pixel.x, pixel.y, img)
+				if img_rect.has_point(pixel):
+					smooth_pixel(pixel.x, pixel.y, img)
 	
 	img.unlock()
 
@@ -304,3 +311,6 @@ func calc_point_index(point: Vector2) -> int:
 func calc_distance_length(a: Vector2, b: Vector2) -> float:
 	return (a-b).length()
 
+
+func colorize_map(img: Image) -> void:
+	pass
