@@ -109,7 +109,8 @@ func generate_places(img: Image) -> void:
 	var connections := []
 	
 	for i in range(DIRS.size()):
-		if not first_connection_generated or randi() % 100 > 50:
+		if not first_connection_generated or randi() % 100 > 30:
+			first_connection_generated = true
 			connections.push_back(dir)
 			dir_idx = (dir_idx + 1) % DIRS.size()
 			dir = DIRS[dir_idx]
