@@ -97,6 +97,31 @@ func generate_places(img: Image) -> void:
 	var offset = size / 15
 	var places := []
 	
+	
+	var first_connection_generated := false
+	
+	var dir_idx = randi() % 4
+	var dir:Vector2 = DIRS[dir_idx]
+	var connections := []
+	
+	for i in range(DIRS.size()):
+		if not first_connection_generated or randi() % 100 > 50:
+			connections.push_back(dir)
+			dir_idx = (dir_idx + 1) % DIRS.size()
+			dir = DIRS[dir_idx]
+		
+	
+	for connection_dir in connections:
+		var max_offset := size - (border_connection_size * 3)
+		var rnd := (randi() % max_offset) + border_connection_size
+		
+		var x = rnd if connection_dir.x == 0 else 0 if connection_dir.x == -1 else size - border_connection_size - 1
+		var y = rnd if connection_dir.y == 0 else 0 if connection_dir.y == -1 else size - border_connection_size - 1
+		
+		create_square(x, y, border_connection_size, border_connection_size, img)
+		var center = Vector2(int(x + border_connection_size / 2), int(y + border_connection_size / 2))
+		places.push_back(center)
+	
 	for i in range(places_count):
 		var x = randi() % (size - offset * 3) + offset
 		var y = randi() % (size - offset * 3) + offset
@@ -185,8 +210,8 @@ func smooth_pixel(x: int, y: int, img: Image) -> void:
 			count += 1
 	
 	
-	
-	img.set_pixel(x, y, Color(h / count, h / count, h / count))
+	if count > 0 :
+		img.set_pixel(x, y, Color(h / count, h / count, h / count))
 	img.unlock()
 
 class DistanceSorter:
