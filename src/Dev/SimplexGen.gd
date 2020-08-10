@@ -122,7 +122,7 @@ func generate_places(img: Image) -> void:
 		var x = rnd if connection_dir.x == 0 else 0 if connection_dir.x == -1 else size - border_connection_size - 1
 		var y = rnd if connection_dir.y == 0 else 0 if connection_dir.y == -1 else size - border_connection_size - 1
 		
-		create_square(x, y, border_connection_size, border_connection_size, img)
+		create_square(x, y, border_connection_size, border_connection_size, img, true)
 		var center = Vector2(int(x + border_connection_size / 2), int(y + border_connection_size / 2))
 		places.push_back(center)
 	
@@ -139,7 +139,7 @@ func generate_places(img: Image) -> void:
 		connect_places(places, img)
 
 
-func create_square(sx: int, sy: int, swidth: int, sheight: int, img: Image) -> void:
+func create_square(sx: int, sy: int, swidth: int, sheight: int, img: Image, connection := false) -> void:
 	var rect := Rect2(sx, sy, swidth, sheight)
 	var img_rect = img.get_used_rect()
 	var half_size:Vector2 = (rect.end - rect.position) / 2
@@ -153,6 +153,8 @@ func create_square(sx: int, sy: int, swidth: int, sheight: int, img: Image) -> v
 		rect.position.y - sborder_tickness,  
 		rect.end.x + (sborder_tickness * 2) - 1, 
 		rect.end.y + (sborder_tickness * 2) - 1)
+		
+	var connection_rect :Rect2 = img_rect.grow(-border_connection_size/2)
 	
 	for pixel_x in range(rect.position.x, rect.end.x):
 		for pixel_y in range(rect.position.y, rect.end.y):
@@ -162,11 +164,15 @@ func create_square(sx: int, sy: int, swidth: int, sheight: int, img: Image) -> v
 				continue
 			
 			img.lock()
-			var h := img.get_pixel(pixel_x, pixel_y).r
-			var dist :float = (pixel_point - center).length()
-			var diff :float = (half_size.length() - dist) / half_size.length()
-			var diff_h = h - 0.5
-			h -= diff_h * diff #TODO Find a better way to place this const
+			var h := 0.5 #TODO Find a better way to place this const
+			
+			if not connection or connection_rect.has_point(pixel_point):
+				h = img.get_pixel(pixel_x, pixel_y).r
+				var dist :float = (pixel_point - center).length()
+				var diff :float = (half_size.length() - dist) / half_size.length()
+				var diff_h = h - 0.5
+				h -= diff_h * diff 
+				
 			img.set_pixel(pixel_x, pixel_y, Color(h, h, h))
 			img.unlock()
 
@@ -313,4 +319,25 @@ func calc_distance_length(a: Vector2, b: Vector2) -> float:
 
 
 func colorize_map(img: Image) -> void:
-	pass
+	img.lock()
+	for x in img.get_size().x:
+		for y in img.get_size().y:
+			var h = img.get_pixel(x, y).r
+			var color = height_to_color(h)
+			img.set_pixel(x, y, color)
+	img.unlock()
+
+
+func height_to_color(height: float) -> Color:
+	if height < 0.2:
+		return Color.blue
+	elif height < 0.45:
+		return Color.orange
+	elif height < 0.55:
+		return Color.yellow
+	elif height < 0.8:
+		return Color.green
+	elif height < 0.9:
+		return Color.gray
+	else:
+		return Color.white
