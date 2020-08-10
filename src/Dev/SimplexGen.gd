@@ -18,27 +18,14 @@ export(int) var border_tickness := 0.3
 export(bool) var border_montains := true
 export(int) var border_connection_size := 15
 export(int) var places_count := 10
+export(int) var places_path_noise_rate := 30
+export(int) var places_path_tickness := 5
 
 const DIRS := [Vector2(1,0), Vector2(0, 1), Vector2(-1, 0), Vector2(0, -1)]
-
-var _astar = AStar2D.new()
 
 func reload(_value):
 	var img = Image.new()
 	img.create(size, size, false, Image.FORMAT_RGB8)
-	
-	for x in range(img.get_size().x):
-		for y in range(img.get_size().y):
-			var point = Vector2(x, y)
-			_astar.add_point(calc_point_index(point), point)
-	
-	for x in range(img.get_size().x):
-		for y in range(img.get_size().y):
-			var point = Vector2(x, y)
-			for dir in DIRS:
-				var neighbor = point + dir
-				if _astar.has_point(calc_point_index(neighbor)):
-					_astar.connect_points(calc_point_index(point), calc_point_index(neighbor))
 	
 	if generate_terrain:
 		generate_terrain(img)
@@ -202,25 +189,26 @@ func smooth_pixel(x: int, y: int, img: Image) -> void:
 	img.set_pixel(x, y, Color(h / count, h / count, h / count))
 	img.unlock()
 
+class DistanceSorter:
+	var target := Vector2.ZERO
+	
+	func sort(a, b):
+		if (target - a).length() < (target - b).length():
+			return true
+		else:
+			return false
 
 func connect_places(places, img: Image) -> void:
-	var places_with_length = []
-	for p in places:
-		places_with_length.push_back([p, p.length()])
-	
-	places_with_length.sort_custom(self, "sort_by_distance")
-	
-	for i in range(places_with_length.size()):
-		var origin := Vector2.ZERO
-		var dest := Vector2.ZERO
-		if i < places.size() - 1:
-			origin = places[i]
-			dest = places[i+1]
-		else:
-			origin = places[i]
-			dest = places[0]
+	while not places.empty():
+		var point = places.pop_back();
 		
-		generate_path(origin, dest, img)
+		if places.empty():
+			return
+		
+		var sorter := DistanceSorter.new()
+		sorter.target = point
+		places.sort_custom(sorter, "sort")
+		generate_path(point, places.front(), img)
 
 
 static func sort_by_distance(a, b) -> bool:
@@ -231,23 +219,63 @@ static func sort_by_distance(a, b) -> bool:
 
 
 func generate_path(origin: Vector2, dest: Vector2, img: Image) -> void:
-	var points = _astar.get_point_path(calc_point_index(origin), calc_point_index(dest))
+	var queue = []
+	var walked = []
+	queue.push_back([origin, calc_distance_length(origin, dest)])
 	
-	for point in points:
-		img.lock()
-		img.set_pixel(point.x, point.y, Color(0.5, 0.5, 0.5))
-		for dir in DIRS:
-			for i in range(1, 5):
-				img.set_pixel(point.x + (dir.x * i), point.y + (dir.y * i), Color(0.5, 0.5, 0.5))
-		img.unlock()
+	var sanity_check := 1000
+	
+	while not queue.empty():
+		sanity_check -= 1
+		if sanity_check < 0:
+			print("Sanity failed. Queue size: %d" % queue.size())
+			return
+		
+		var point = queue.pop_front()[0]
+		
+		walked.push_front(point)
+		
+		if point == dest:
+			draw_path(walked, img)
+			return
 
-	for point in points:
-		img.lock()
+		var added_noise := false
+
 		for dir in DIRS:
-			for i in range(1, 5):
-				smooth_pixel(point.x + (dir.x * i), point.y + (dir.y * i), img)
-		img.unlock()
+			var next_point :Vector2 = point + dir
+			
+			if not added_noise && randi() % 100 < places_path_noise_rate:
+				added_noise = true
+				continue
+				
+			if not walked.has(next_point):
+				queue.push_back([next_point, calc_distance_length(next_point, dest)])
+		
+		queue.sort_custom(self, "sort_by_distance")
+
+
+func draw_path(path, img: Image) -> void:
+	img.lock()
+	
+	for p in path:
+		for dir in DIRS:
+			for i in range(1, places_path_tickness):
+				var pixel = p + (dir * i)
+				img.set_pixel(pixel.x, pixel.y, Color(0.5, 0.5, 0.5))
+	
+	for p in path:
+		for dir in DIRS:
+			for i in range(1, int(places_path_tickness * 2)):
+				var pixel = p + (dir * i)
+				smooth_pixel(pixel.x, pixel.y, img)
+	
+	img.unlock()
 
 
 func calc_point_index(point: Vector2) -> int:
 	return int(point.x) * size + int(point.y)
+
+
+func calc_distance_length(a: Vector2, b: Vector2) -> float:
+	return (a-b).length()
+
