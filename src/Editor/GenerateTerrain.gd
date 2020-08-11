@@ -8,7 +8,7 @@ export (int) var OCTAVES = 2
 export (float) var PERSISTENCE = 0.8
 export (float) var PERIOD = 20.0
 export (int) var WALL_SIZE = 3
-export (float) var WALL_TICKNESS = 1.0 / WALL_SIZE
+export (float) var WALL_thickness = 1.0 / WALL_SIZE
 
 
 func _ready():
@@ -73,4 +73,4 @@ func apply_wall_height(x, y, h):
 	elif y > SIZE - 1 - WALL_SIZE:
 		y_dif = y - (SIZE - 1 - WALL_SIZE)
 
-	return h + (max(x_dif, y_dif) * WALL_TICKNESS)
+	return h + (max(x_dif, y_dif) * WALL_thickness)
