@@ -10,18 +10,18 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Reference",
-"class": "HeightMap",
-"language": "GDScript",
-"path": "res://src/System/HeightMap.gd"
-}, {
-"base": "Reference",
 "class": "MapGenerator",
 "language": "GDScript",
-"path": "res://src/System/MapGenerator.gd"
+"path": "res://src/System/Map/MapGenerator.gd"
+}, {
+"base": "Reference",
+"class": "MapHeight",
+"language": "GDScript",
+"path": "res://src/System/Map/MapHeight.gd"
 } ]
 _global_script_class_icons={
-"HeightMap": "",
-"MapGenerator": ""
+"MapGenerator": "",
+"MapHeight": ""
 }
 
 [application]

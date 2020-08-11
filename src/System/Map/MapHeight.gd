@@ -1,4 +1,4 @@
-class_name HeightMap
+class_name MapHeight
 
 var _buffer := []
 var _size := 0
@@ -6,6 +6,8 @@ var _size := 0
 func init(size: int):
 	_size = size
 	_buffer.resize(size * size)
+	for i in size * size:
+		_buffer[i] = 0
 
 
 func set_at(x: int, y: int, value: float) -> void:

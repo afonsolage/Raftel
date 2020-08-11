@@ -22,8 +22,8 @@ export(int) var places_path_thickness := 5
 
 export(bool) var disable_randomness := false
 
-func generate() -> HeightMap:
-	var map = HeightMap.new()
+func generate() -> MapHeight:
+	var map = MapHeight.new()
 	map.init(size)
 	
 	if is_generate_terrain:
@@ -31,13 +31,13 @@ func generate() -> HeightMap:
 	
 	if is_generate_border:
 		generate_border(map)
-	
+	 
 	if is_generate_places:
 		generate_places(map)
 	
 	return map
 
-func generate_terrain(map: HeightMap) -> void:
+func generate_terrain(map: MapHeight) -> void:
 	var noise = OpenSimplexNoise.new()
 	
 	if disable_randomness:
@@ -54,7 +54,7 @@ func generate_terrain(map: HeightMap) -> void:
 			map.set_at(x, y, h)
 
 
-func generate_border(map: HeightMap) -> void:
+func generate_border(map: MapHeight) -> void:
 	var border_left := border_size
 	var border_up := border_size
 	var border_right := size - border_size
@@ -84,7 +84,7 @@ func generate_border(map: HeightMap) -> void:
 			map.set_at(x, y, h)
 
 
-func generate_places(map: HeightMap) -> void:
+func generate_places(map: MapHeight) -> void:
 	var offset := int(size / 15)
 	var places := []
 	
@@ -126,7 +126,7 @@ func generate_places(map: HeightMap) -> void:
 		connect_places(places, map)
 
 
-func create_square(sx: int, sy: int, swidth: int, sheight: int, map: HeightMap, connection := false) -> void:
+func create_square(sx: int, sy: int, swidth: int, sheight: int, map: MapHeight, connection := false) -> void:
 	var rect := Rect2(sx, sy, swidth, sheight)
 	var map_rect = Rect2(0, 0, size, size)
 	var half_size:Vector2 = (rect.end - rect.position) / 2
@@ -185,7 +185,7 @@ func create_square(sx: int, sy: int, swidth: int, sheight: int, map: HeightMap, 
 			point += dir
 
 
-func smooth_pixel(x: int, y: int, map: HeightMap) -> void:
+func smooth_pixel(x: int, y: int, map: MapHeight) -> void:
 	var map_rect = Rect2(0, 0, size, size)
 	var h := 0.0
 	var count := 0
@@ -213,7 +213,7 @@ class DistanceSorter:
 		else:
 			return false
 
-func connect_places(places, map: HeightMap) -> void:
+func connect_places(places, map: MapHeight) -> void:
 	while not places.empty():
 		var point = places.pop_back();
 		
@@ -233,7 +233,7 @@ static func sort_by_distance(a, b) -> bool:
 		return false
 
 
-func generate_path(origin: Vector2, dest: Vector2, map: HeightMap) -> void:
+func generate_path(origin: Vector2, dest: Vector2, map: MapHeight) -> void:
 	var queue = []
 	var walked = []
 	queue.push_back([origin, calc_distance_length(origin, dest)])
@@ -269,7 +269,7 @@ func generate_path(origin: Vector2, dest: Vector2, map: HeightMap) -> void:
 		queue.sort_custom(self, "sort_by_distance")
 
 
-func draw_path(path, map: HeightMap) -> void:
+func draw_path(path, map: MapHeight) -> void:
 	var map_rect = Rect2(0, 0, size, size)
 	
 	for p in path:
