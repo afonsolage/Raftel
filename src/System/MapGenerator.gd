@@ -8,16 +8,16 @@ export(bool) var is_generate_places := true
 export(bool) var is_connect_places := true
 export(bool) var is_smooth_connection_border := true
 
-export(int) var size := 300
+export(int) var size := 256
 export(int) var octaves := 2
 export(float) var persistance := 0.3
 export(float) var period := 20.0
 export(int) var border_size := 30
-export(int) var border_thickness := 0.3
+export(float) var border_thickness := 0.05
 export(bool) var border_montains := true
-export(int) var border_connection_size := 15
-export(int) var places_count := 10
-export(int) var places_path_noise_rate := 30
+export(int) var border_connection_size := 20
+export(int) var places_count := 5
+export(int) var places_path_noise_rate := 40
 export(int) var places_path_thickness := 5
 
 export(bool) var disable_randomness := false
