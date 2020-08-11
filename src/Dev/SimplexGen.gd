@@ -46,12 +46,12 @@ func reload(_value):
 	
 	generator.disable_randomness = disable_randomness
 	
-	generator.generate()
+	var map: HeightMap = generator.generate()
 	
 	var img = Image.new()
 	img.create(size, size, false, Image.FORMAT_RGB8)
 	
-	draw_map(img, generator)
+	draw_map(img, map)
 		
 	
 	var texture = ImageTexture.new()
@@ -60,11 +60,11 @@ func reload(_value):
 	self.set_texture(texture)
 
 
-func draw_map(img: Image, generator: MapGenerator) -> void:
+func draw_map(img: Image, map: HeightMap) -> void:
 	img.lock()
 	for x in img.get_size().x:
 		for y in img.get_size().y:
-			var h = generator.height_at(x, y)
+			var h = map.get_at(x, y)
 			var color = height_to_color(h)
 			img.set_pixel(x, y, color)
 	img.unlock()
@@ -86,3 +86,5 @@ func height_to_color(height: float) -> Color:
 		return Color.gray
 	else:
 		return Color.white
+		
+

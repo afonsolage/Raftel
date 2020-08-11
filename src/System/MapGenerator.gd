@@ -22,22 +22,22 @@ export(int) var places_path_thickness := 5
 
 export(bool) var disable_randomness := false
 
-var _buffer := []
-
-func generate():
-	_buffer.resize(size * size)
+func generate() -> HeightMap:
+	var map = HeightMap.new()
+	map.init(size)
 	
 	if is_generate_terrain:
-		generate_terrain()
+		generate_terrain(map)
 	
 	if is_generate_border:
-		generate_border()
+		generate_border(map)
 	
 	if is_generate_places:
-		generate_places()
+		generate_places(map)
 	
+	return map
 
-func generate_terrain() -> void:
+func generate_terrain(map: HeightMap) -> void:
 	var noise = OpenSimplexNoise.new()
 	
 	if disable_randomness:
@@ -51,12 +51,10 @@ func generate_terrain() -> void:
 	for x in range(size):
 		for y in range(size):
 			var h = (noise.get_noise_2d(x, y) + 1) / 2
-			
-			var idx = calc_point_index(x, y)
-			_buffer[idx] = h
+			map.set_at(x, y, h)
 
 
-func generate_border() -> void:
+func generate_border(map: HeightMap) -> void:
 	var border_left := border_size
 	var border_up := border_size
 	var border_right := size - border_size
@@ -81,14 +79,12 @@ func generate_border() -> void:
 			elif y > border_down:
 				border_thickness_y = y - border_down
 			
-			var idx = calc_point_index(x, y)
-			
-			var h = _buffer[idx]
+			var h = map.get_at(x, y)
 			h += max(border_thickness_x, border_thickness_y) * (border_thickness * (1 if border_montains else -1))
-			_buffer[idx] = h
+			map.set_at(x, y, h)
 
 
-func generate_places() -> void:
+func generate_places(map: HeightMap) -> void:
 	var offset := int(size / 15)
 	var places := []
 	
@@ -113,7 +109,7 @@ func generate_places() -> void:
 		var x = rnd if connection_dir.x == 0 else 0 if connection_dir.x == -1 else size - border_connection_size - 1
 		var y = rnd if connection_dir.y == 0 else 0 if connection_dir.y == -1 else size - border_connection_size - 1
 		
-		create_square(x, y, border_connection_size, border_connection_size, true)
+		create_square(x, y, border_connection_size, border_connection_size, map, true)
 		var center = Vector2(int(x + border_connection_size / 2), int(y + border_connection_size / 2))
 		places.push_back(center)
 	
@@ -123,14 +119,14 @@ func generate_places() -> void:
 		var w = randi() % offset * 2 + offset
 		var h = randi() % offset * 2 + offset
 		
-		create_square(x, y, w, h)
+		create_square(x, y, w, h, map)
 		places.push_back(Vector2(int(x + w / 2), int(y + h / 2)))
 
 	if is_connect_places:
-		connect_places(places)
+		connect_places(places, map)
 
 
-func create_square(sx: int, sy: int, swidth: int, sheight: int, connection := false) -> void:
+func create_square(sx: int, sy: int, swidth: int, sheight: int, map: HeightMap, connection := false) -> void:
 	var rect := Rect2(sx, sy, swidth, sheight)
 	var map_rect = Rect2(0, 0, size, size)
 	var half_size:Vector2 = (rect.end - rect.position) / 2
@@ -155,16 +151,15 @@ func create_square(sx: int, sy: int, swidth: int, sheight: int, connection := fa
 				continue
 			
 			var h := 0.5 #TODO Find a better way to place this const
-			var idx = calc_point_index(pixel_x, pixel_y)
 			
 			if not connection or connection_rect.has_point(pixel_point):
-				h = _buffer[idx]
+				h = map.get_at(pixel_x, pixel_y)
 				var dist :float = (pixel_point - center).length()
 				var diff :float = (half_size.length() - dist) / half_size.length()
 				var diff_h = h - 0.5
 				h -= diff_h * diff 
 			
-			_buffer[idx] = h
+			map.set_at(pixel_x, pixel_y, h)
 
 	if is_smooth_connection_border:
 		var point := center
@@ -176,7 +171,7 @@ func create_square(sx: int, sy: int, swidth: int, sheight: int, connection := fa
 		
 		while border_rect.has_point(point):
 			if map_rect.has_point(point) && not rect.has_point(point):
-				smooth_pixel(int(point.x), int(point.y))
+				smooth_pixel(int(point.x), int(point.y), map)
 			
 			walk_left -= 1
 			
@@ -190,7 +185,7 @@ func create_square(sx: int, sy: int, swidth: int, sheight: int, connection := fa
 			point += dir
 
 
-func smooth_pixel(x: int, y: int) -> void:
+func smooth_pixel(x: int, y: int, map: HeightMap) -> void:
 	var map_rect = Rect2(0, 0, size, size)
 	var h := 0.0
 	var count := 0
@@ -202,14 +197,12 @@ func smooth_pixel(x: int, y: int) -> void:
 			if not map_rect.has_point(point):
 				continue
 			
-			var idx := calc_point_index(point.x, point.y)
-			h += _buffer[idx]
+			h += map.get_at(point.x, point.y)
 			count += 1
 	
 	
 	if count > 0 :
-		var idx := calc_point_index(x, y)
-		_buffer[idx] = h / count
+		map.set_at(x, y, h / count)
 
 class DistanceSorter:
 	var target := Vector2.ZERO
@@ -220,7 +213,7 @@ class DistanceSorter:
 		else:
 			return false
 
-func connect_places(places) -> void:
+func connect_places(places, map: HeightMap) -> void:
 	while not places.empty():
 		var point = places.pop_back();
 		
@@ -230,7 +223,7 @@ func connect_places(places) -> void:
 		var sorter := DistanceSorter.new()
 		sorter.target = point
 		places.sort_custom(sorter, "sort")
-		generate_path(point, places.front())
+		generate_path(point, places.front(), map)
 
 
 static func sort_by_distance(a, b) -> bool:
@@ -240,7 +233,7 @@ static func sort_by_distance(a, b) -> bool:
 		return false
 
 
-func generate_path(origin: Vector2, dest: Vector2) -> void:
+func generate_path(origin: Vector2, dest: Vector2, map: HeightMap) -> void:
 	var queue = []
 	var walked = []
 	queue.push_back([origin, calc_distance_length(origin, dest)])
@@ -258,7 +251,7 @@ func generate_path(origin: Vector2, dest: Vector2) -> void:
 		walked.push_front(point)
 		
 		if point == dest:
-			draw_path(walked)
+			draw_path(walked, map)
 			return
 
 		var added_noise := false
@@ -276,7 +269,7 @@ func generate_path(origin: Vector2, dest: Vector2) -> void:
 		queue.sort_custom(self, "sort_by_distance")
 
 
-func draw_path(path) -> void:
+func draw_path(path, map: HeightMap) -> void:
 	var map_rect = Rect2(0, 0, size, size)
 	
 	for p in path:
@@ -284,24 +277,16 @@ func draw_path(path) -> void:
 			for i in range(1, places_path_thickness):
 				var pixel = p + (dir * i)
 				if map_rect.has_point(pixel):
-					var idx = calc_point_index(pixel.x, pixel.y)
-					_buffer[idx] = 0.5
+					map.set_at(pixel.x, pixel.y, 0.5)
 	
 	for p in path:
 		for dir in DIRS:
 			for i in range(1, int(places_path_thickness * 2)):
 				var pixel = p + (dir * i)
 				if map_rect.has_point(pixel):
-					smooth_pixel(pixel.x, pixel.y)
-
-
-func calc_point_index(x: int, y: int) -> int:
-	return int(x) * size + int(y)
+					smooth_pixel(pixel.x, pixel.y, map)
 
 
 func calc_distance_length(a: Vector2, b: Vector2) -> float:
 	return (a-b).length()
 
-
-func height_at(x: int, y: int) -> float:
-	return _buffer[calc_point_index(x, y)]
