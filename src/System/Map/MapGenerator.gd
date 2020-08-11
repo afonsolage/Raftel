@@ -22,7 +22,13 @@ export(int) var places_path_thickness := 5
 
 export(bool) var disable_randomness := false
 
-func generate() -> MapHeight:
+func generate(some_seed: int = 0) -> MapHeight:
+	print("Generating a new map with seed %d" % some_seed)
+	if some_seed == 0:
+		randomize()
+	else:
+		seed(some_seed)
+	
 	var map = MapHeight.new()
 	map.init(size)
 	
@@ -36,6 +42,7 @@ func generate() -> MapHeight:
 		generate_places(map)
 	
 	return map
+
 
 func generate_terrain(map: MapHeight) -> void:
 	var noise = OpenSimplexNoise.new()
@@ -204,6 +211,7 @@ func smooth_pixel(x: int, y: int, map: MapHeight) -> void:
 	if count > 0 :
 		map.set_at(x, y, h / count)
 
+
 class DistanceSorter:
 	var target := Vector2.ZERO
 	
@@ -212,6 +220,7 @@ class DistanceSorter:
 			return true
 		else:
 			return false
+
 
 func connect_places(places, map: MapHeight) -> void:
 	while not places.empty():

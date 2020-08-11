@@ -30,6 +30,10 @@ config/name="Raftel"
 run/main_scene="res://assets/scenes/stages/world.tscn"
 config/icon="res://assets/resources/icon.png"
 
+[autoload]
+
+MapService="*res://src/System/Map/MapService.gd"
+
 [debug]
 
 gdscript/warnings/integer_division=false
