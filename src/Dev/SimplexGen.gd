@@ -51,8 +51,8 @@ func reload(_value):
 	var img = Image.new()
 	img.create(size, size, false, Image.FORMAT_RGB8)
 	
-	if is_colorize_map:
-		colorize_map(img, generator)
+	draw_map(img, generator)
+		
 	
 	var texture = ImageTexture.new()
 	texture.create_from_image(img)
@@ -60,7 +60,7 @@ func reload(_value):
 	self.set_texture(texture)
 
 
-func colorize_map(img: Image, generator: MapGenerator) -> void:
+func draw_map(img: Image, generator: MapGenerator) -> void:
 	img.lock()
 	for x in img.get_size().x:
 		for y in img.get_size().y:
@@ -71,6 +71,9 @@ func colorize_map(img: Image, generator: MapGenerator) -> void:
 
 
 func height_to_color(height: float) -> Color:
+	if not is_colorize_map:
+		return Color(height, height, height)
+	
 	if height < 0.2:
 		return Color.blue
 	elif height < 0.45:
